@@ -1,0 +1,32 @@
+﻿@page "/branchoffices"
+
+<h3>Sucursales</h3>
+
+<div class="mb-3">
+    <a class="btn btn-outline-primary" href="/branchoffice/create">Nueva Sucursal</a>
+</div>
+
+<GenericList MyList="BranchOffices">
+    <Body>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Sucursal</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var branchoffice in BranchOffices!)
+                {
+                    <tr>
+                        <td>@branchoffice.Name</td>
+                        <td>
+                            <a href="/branchoffice/edit/@branchoffice.Id" class="btn btn-outline-warning">Editar</a>
+                            <button @onclick=@(() => DeleteAsync(branchoffice)) class="btn btn-outline-danger">Borrar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </Body>
+</GenericList>

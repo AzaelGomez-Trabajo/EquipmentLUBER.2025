@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Equipment.Backend.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("/api/[controller]")]
     public class BranchOfficesController : ControllerBase
     {
         private readonly DataContext _context;
@@ -17,7 +17,7 @@ namespace Equipment.Backend.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post1Async(BranchOffice branchOffice)
+        public async Task<IActionResult> PostAsync(BranchOffice branchOffice)
         {
             _context.Add(branchOffice);
             await _context.SaveChangesAsync();
@@ -27,7 +27,7 @@ namespace Equipment.Backend.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAsync()
         {
-            var branchOffices = await _context.BranchOffices.ToListAsync();
+            var branchOffices = await _context.BranchOffices.AsNoTracking().ToListAsync();
             return Ok(branchOffices);
         }
 
