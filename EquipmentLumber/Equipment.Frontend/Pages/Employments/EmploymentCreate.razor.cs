@@ -3,19 +3,19 @@ using Equipment.Frontend.Repositories;
 using Equipment.Shared.Entities;
 using Microsoft.AspNetCore.Components;
 
-namespace Equipment.Frontend.Pages.BranchOffices
+namespace Equipment.Frontend.Pages.Employments
 {
-    public partial class BranchOfficeCreate
+    public partial class EmploymentCreate
     {
-        private BranchOffice branchOffice = new();
-        private BranchOfficeForm? branchOfficeForm;
+        private Employment employment = new();
+        private EmploymentForm? employmentForm;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
 
         private async Task CreateAsync()
         {
-            var responseHttp = await Repository.PostAsync("/api/BranchOffices", branchOffice);
+            var responseHttp = await Repository.PostAsync("/api/Employments", employment);
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -35,8 +35,8 @@ namespace Equipment.Frontend.Pages.BranchOffices
 
         private void Return()
         {
-            branchOfficeForm!.FormPostedSuccessFully = true;
-            NavigationManager.NavigateTo("/branchOffices");
+            employmentForm!.FormPostedSuccessFully = true;
+            NavigationManager.NavigateTo("/employments");
         }
     }
 }

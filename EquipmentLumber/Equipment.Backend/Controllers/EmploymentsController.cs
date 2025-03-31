@@ -6,9 +6,9 @@ namespace Equipment.Backend.Controllers
 {
     [ApiController]
     [Route("/api/[controller]")]
-    public class BranchOfficesController : GenericController<BranchOffice>
+    public class EmploymentsController : GenericController<Employment>
     {
-        public BranchOfficesController(IGenericUnitOfWork<BranchOffice> unitOfWork) : base(unitOfWork)
+        public EmploymentsController(IGenericUnitOfWork<Employment> unitOfWork) : base(unitOfWork)
         {
         }
     }

@@ -10,11 +10,13 @@ namespace Equipment.Backend.Data
         }
 
         public DbSet<BranchOffice> BranchOffices { get; set; }
+        public DbSet<Employment> Employments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<BranchOffice>().HasIndex(x => x.Name).IsUnique();
+            modelBuilder.Entity<Employment>().HasIndex(x => x.Name).IsUnique();
         }
     }
 }

@@ -1,0 +1,32 @@
+﻿@page "/employments"
+
+<h3>Puestos</h3>
+
+<div class="mb-3">
+    <a class="btn btn-outline-primary" href="/employment/create">Nuevo Puesto</a>
+</div>
+
+<GenericList MyList="Employments">
+    <Body>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Puesto</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var employment in Employments!)
+                {
+                    <tr>
+                        <td>@employment.Name</td>
+                        <td>
+                            <a href="/employment/edit/@employment.Id" class="btn btn-outline-warning">Editar</a>
+                            <button @onclick=@(() => DeleteAsync(employment)) class="btn btn-outline-danger">Borrar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </Body>
+</GenericList>

@@ -1,14 +1,18 @@
 using Equipment.Backend.Data;
+using Equipment.Backend.Repositories.Implementations;
+using Equipment.Backend.Repositories.Interfaces;
+using Equipment.Backend.UnitsOfWork.Implementations;
+using Equipment.Backend.UnitsOfWork.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=CadenaSQL2"));
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped(typeof(IGenericUnitOfWork<>), typeof(GenericUnitOfWork<>));
 
 var app = builder.Build();
 

@@ -1,33 +1,32 @@
 ﻿using CurrieTechnologies.Razor.SweetAlert2;
-using Equipment.Frontend.Pages.BranchOffices;
 using Equipment.Frontend.Repositories;
 using Equipment.Shared.Entities;
 using Microsoft.AspNetCore.Components;
 using System.Net;
 
-namespace Equipment.Frontend.Pages
+namespace Equipment.Frontend.Pages.BranchOffices
 {
     public partial class BranchOfficeEdit
     {
         private BranchOffice? branchOffice;
         private BranchOfficeForm? branchOfficeForm;
-        [Inject] private IRepository repository { get; set; } = null!;
-        [Inject] private SweetAlertService sweetAlertService { get; set; } = null!;
-        [Inject] private NavigationManager navigationManager { get; set; } = null!;
+        [Inject] private IRepository Repository { get; set; } = null!;
+        [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
+        [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [EditorRequired, Parameter] public int Id { get; set; }
         protected async override Task OnParametersSetAsync()
         {
-            var responseHttp = await repository.GetAsync<BranchOffice>($"/api/BranchOffices/{Id}");
+            var responseHttp = await Repository.GetAsync<BranchOffice>($"/api/BranchOffices/{Id}");
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
                 {
-                    navigationManager.NavigateTo("/branchOffices");
+                    NavigationManager.NavigateTo("/branchOffices");
                 }
                 else
                 {
                     var message = await responseHttp.GetErrorMessageAsync();
-                    await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                    await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 }
             }
             else
@@ -38,15 +37,15 @@ namespace Equipment.Frontend.Pages
 
         private async Task UpdateAsync()
         { 
-            var responseHttp = await repository.PutAsync("/api/BranchOffices", branchOffice);
+            var responseHttp = await Repository.PutAsync("/api/BranchOffices", branchOffice);
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
-                await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 return;
             }
             Return();
-            var toast = sweetAlertService.Mixin(new SweetAlertOptions
+            var toast = SweetAlertService.Mixin(new SweetAlertOptions
             {
                 Toast = true,
                 Position = SweetAlertPosition.BottomEnd,
@@ -58,7 +57,7 @@ namespace Equipment.Frontend.Pages
         private void Return()
         {
             branchOfficeForm!.FormPostedSuccessFully = true;
-            navigationManager.NavigateTo("/branchOffices");
+            NavigationManager.NavigateTo("/branchOffices");
         }
 
     }
