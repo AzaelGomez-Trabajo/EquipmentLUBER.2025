@@ -1,0 +1,14 @@
+﻿<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation" />
+
+<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <div class="mb-3">
+        <label>Puesto:</label>
+        <div>
+            <input class="form-control" @bind-value="@Employment.Name" />
+            <ValidationMessage For="@(() => Employment.Name)" />
+        </div>
+    </div>
+    <button class="btn btn-outline-primary" type="submit">Guardar Cambios</button>
+    <button class="btn btn-outline-success" @onclick="ReturnAction"> Regresar</button>
+</EditForm>
