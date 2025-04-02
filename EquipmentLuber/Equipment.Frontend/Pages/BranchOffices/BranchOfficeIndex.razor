@@ -3,7 +3,7 @@
 <h3>Sucursales</h3>
 
 <div class="mb-3">
-    <a class="btn btn-outline-primary" href="/branchoffice/create">Nueva Sucursal</a>
+    <a class="btn btn-outline-primary" href="/branchoffice/create"> Nueva Sucursal</a>
 </div>
 
 <GenericList MyList="BranchOffices">
@@ -12,6 +12,7 @@
             <thead>
                 <tr>
                     <th>Sucursal</th>
+                    <th>Departamentos</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -20,9 +21,11 @@
                 {
                     <tr>
                         <td>@branchoffice.Name</td>
+                        <td>@branchoffice.DepartmentsNumber</td>
                         <td>
-                            <a href="/branchoffice/edit/@branchoffice.Id" class="btn btn-outline-warning">Editar</a>
-                            <button @onclick=@(() => DeleteAsync(branchoffice)) class="btn btn-outline-danger">Borrar</button>
+                            <a href="/branchoffice/edit/@branchoffice.Id" class="btn btn-outline-warning btn-sm">Editar</a>
+                            <a href="/branchoffice/details/@branchoffice.Id" class="btn btn-outline-info btn-sm">Detalles</a>
+                            <button @onclick=@(() => DeleteAsync(branchoffice)) class="btn btn-outline-danger btn-sm">Borrar</button>
                         </td>
                     </tr>
                 }

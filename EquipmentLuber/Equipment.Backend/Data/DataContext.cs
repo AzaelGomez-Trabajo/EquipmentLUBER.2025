@@ -20,7 +20,7 @@ namespace Equipment.Backend.Data
             modelBuilder.Entity<BranchOffice>().HasIndex(x => x.Name).IsUnique();
             modelBuilder.Entity<Department>().HasIndex(x => new { x.BranchOfficeId, x.Name }).IsUnique();
             modelBuilder.Entity<Employment>().HasIndex(x => new { x.DepartmentId, x.Name }).IsUnique();
-            modelBuilder.Entity<Employee>().HasIndex(x => new { x.Name }).IsUnique();
+            modelBuilder.Entity<Employee>().HasIndex(x => new { x.EmploymentId, x.Name }).IsUnique();
             DisableCascadingDelete(modelBuilder);
         }
 

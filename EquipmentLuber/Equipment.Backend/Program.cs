@@ -20,7 +20,11 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 builder.Services.AddScoped(typeof(IGenericUnitOfWork<>), typeof(GenericUnitOfWork<>));
 
 builder.Services.AddScoped<IBranchOfficeRepository, BranchOfficeRepository>();
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+
 builder.Services.AddScoped<IBranchOfficeUnitOfWork, BranchOfficeUnitOfWork>();
+builder.Services.AddScoped<IDepartmentUnitOfWork, DepartmentUnitOfWork>();
+
 
 var app = builder.Build();
 SeedData(app);

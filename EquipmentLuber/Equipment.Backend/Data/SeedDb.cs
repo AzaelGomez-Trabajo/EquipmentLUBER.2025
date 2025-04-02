@@ -71,7 +71,7 @@ namespace Equipment.Backend.Data
                 });
                 _context.BranchOffices.Add(new BranchOffice
                 {
-                    Name = "Leon" ,
+                    Name = "Leon",
                     Departments =
                     [
                         new Department
@@ -86,7 +86,7 @@ namespace Equipment.Backend.Data
                     ]
                 });
                 _context.BranchOffices.Add(new BranchOffice
-                { 
+                {
                     Name = "Merida",
                     Departments =
                     [
@@ -150,7 +150,7 @@ namespace Equipment.Backend.Data
                     ]
                 });
                 _context.BranchOffices.Add(new BranchOffice
-                { 
+                {
                     Name = "Pachuca",
                     Departments =
                     [
@@ -164,9 +164,8 @@ namespace Equipment.Backend.Data
                             ]
                         },
                     ]
-
                 });
-                _context.BranchOffices.Add(new BranchOffice 
+                _context.BranchOffices.Add(new BranchOffice
                 {
                     Name = "Puebla",
                     Departments =
@@ -198,7 +197,7 @@ namespace Equipment.Backend.Data
                         },
                     ]
                 });
-                _context.BranchOffices.Add(new BranchOffice 
+                _context.BranchOffices.Add(new BranchOffice
                 {
                     Name = "San Luis",
                     Departments =
@@ -210,11 +209,12 @@ namespace Equipment.Backend.Data
                             [
                                 new() { Name = "Gerente" },
                                 new() { Name = "Facturacion" },
+                                new() { Name = "Ventas" },
                             ]
                         },
                     ]
                 });
-                _context.BranchOffices.Add(new BranchOffice 
+                _context.BranchOffices.Add(new BranchOffice
                 {
                     Name = "Tapachula",
                     Departments =
@@ -230,7 +230,7 @@ namespace Equipment.Backend.Data
                         },
                     ]
                 });
-                _context.BranchOffices.Add(new BranchOffice 
+                _context.BranchOffices.Add(new BranchOffice
                 {
                     Name = "Toluca",
                     Departments =
@@ -246,7 +246,7 @@ namespace Equipment.Backend.Data
                         },
                     ]
                 });
-                _context.BranchOffices.Add(new BranchOffice 
+                _context.BranchOffices.Add(new BranchOffice
                 {
                     Name = "Tuxtla",
                     Departments =
@@ -262,7 +262,7 @@ namespace Equipment.Backend.Data
                         },
                     ]
                 });
-                _context.BranchOffices.Add(new BranchOffice 
+                _context.BranchOffices.Add(new BranchOffice
                 {
                     Name = "Veracruz",
                     Departments =
@@ -277,9 +277,8 @@ namespace Equipment.Backend.Data
                             ]
                         },
                     ]
-
                 });
-                _context.BranchOffices.Add(new BranchOffice 
+                _context.BranchOffices.Add(new BranchOffice
                 {
                     Name = "Villa Hermosa",
                     Departments =

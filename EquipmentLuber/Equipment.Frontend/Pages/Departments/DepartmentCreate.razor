@@ -1,0 +1,5 @@
+﻿@page "/department/create/{BranchOfficeId:int}"
+
+<h3>Nuevo Departamento</h3>
+
+<FormWithName @ref="departmentForm" Label ="Departamento:" Model="department" OnValidSubmint="CreateAsync" ReturnAction="Return"/>

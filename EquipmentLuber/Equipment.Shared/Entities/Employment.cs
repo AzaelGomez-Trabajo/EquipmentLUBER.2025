@@ -15,5 +15,7 @@ namespace Equipment.Shared.Entities
         public int DepartmentId { get; set; }
 
         public Department? Department { get; set; } = null!;
+
+        public ICollection<Employee>? Employees { get; set; }
     }
 }

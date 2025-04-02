@@ -1,0 +1,42 @@
+﻿@page "/branchoffice/details/{BranchOfficeId:int}"
+
+@if (branchOffice is null)
+{
+    <Loading />
+}
+else
+{
+    <h3>@branchOffice.Name</h3>
+    <div class="2">
+        <a class="btn btn-outline-primary" href="/department/create/@branchOffice.Id"> Nuevo Departamento</a>
+        <a class="btn btn-outline-info" href="/branchoffices">Regresar</a>
+    </div>
+    <h4>Departamentos</h4>
+    <GenericList MyList="branchOffice.Departments!.ToList()">
+        <Body>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Departamento</th>
+                        <th>Puestos</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var department in branchOffice.Departments!)
+                    {
+                        <tr>
+                            <td>@department.Name</td>
+                            <td>@department.EmploymentsNumber</td>
+                            <td>
+                                <a class="btn btn-outline-warning btn-sm" href="/department/edit/@department.Id">Editar</a>
+                                <a class="btn btn-outline-info btn-sm" href="/department/details/@department.Id">Detalles</a>
+                                <button class="btn btn-outline-danger btn-sm" @onclick=@(() => DeleteAsync(department))>Detalles</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </Body>
+    </GenericList>
+}
