@@ -8,7 +8,7 @@ namespace Equipment.Frontend.Pages.Employments
     public partial class EmploymentCreate
     {
         private Employment employment = new();
-        private EmploymentForm? employmentForm;
+        //private EmploymentForm? employmentForm;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
@@ -35,7 +35,7 @@ namespace Equipment.Frontend.Pages.Employments
 
         private void Return()
         {
-            employmentForm!.FormPostedSuccessFully = true;
+            //employmentForm!.FormPostedSuccessFully = true;
             NavigationManager.NavigateTo("/employments");
         }
     }

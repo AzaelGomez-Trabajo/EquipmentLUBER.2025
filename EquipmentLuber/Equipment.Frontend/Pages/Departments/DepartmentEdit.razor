@@ -1,0 +1,12 @@
+﻿@page "/department/edit/{DepartmentId:int}"
+
+<h3>Editar Departamento</h3>
+
+@if (department is null)
+{
+    <Loading />
+}
+else
+{
+    <FormWithName @ref="departmentForm" Label="Departamento: " Model="department" OnValidSubmint="SaveAsync" ReturnAction="Return"/>    
+}

@@ -1,13 +1,1 @@
-﻿@page "/employment/edit/{Id:int}"
-
-
-<h3>Editar Puesto</h3>
-
-@if (employment is null)
-{
-    <Loading />
-}
-else
-{
-    <EmploymentForm @ref="employmentForm" Employment="employment" OnValidSubmit="UpdateAsync" ReturnAction="Return" />
-}
+﻿
