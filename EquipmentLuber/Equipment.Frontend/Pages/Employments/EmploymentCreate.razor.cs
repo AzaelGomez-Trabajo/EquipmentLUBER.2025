@@ -1,5 +1,6 @@
 ﻿using CurrieTechnologies.Razor.SweetAlert2;
 using Equipment.Frontend.Repositories;
+using Equipment.Frontend.Shared;
 using Equipment.Shared.Entities;
 using Microsoft.AspNetCore.Components;
 
@@ -8,13 +9,15 @@ namespace Equipment.Frontend.Pages.Employments
     public partial class EmploymentCreate
     {
         private Employment employment = new();
-        //private EmploymentForm? employmentForm;
+        private FormWithName<Employment>? employmentForm;
+        
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
-
+        [Parameter] public int DepartmentId { get; set; }
         private async Task CreateAsync()
         {
+            employment.DepartmentId = DepartmentId;
             var responseHttp = await Repository.PostAsync("/api/Employments", employment);
             if (responseHttp.Error)
             {
@@ -35,8 +38,8 @@ namespace Equipment.Frontend.Pages.Employments
 
         private void Return()
         {
-            //employmentForm!.FormPostedSuccessFully = true;
-            NavigationManager.NavigateTo("/employments");
+            employmentForm!.FormPostedSuccessfully = true;
+            NavigationManager.NavigateTo($"/department/details/{DepartmentId}");
         }
     }
 }

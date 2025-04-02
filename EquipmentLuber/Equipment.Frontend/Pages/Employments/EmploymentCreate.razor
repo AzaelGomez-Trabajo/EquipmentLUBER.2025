@@ -1,1 +1,9 @@
-﻿
+﻿@page "/employment/create/{DepartmentId:int}"
+
+<h3>Nuevo Puesto</h3>
+
+<FormWithName @ref="employmentForm"
+              Label="Puestos"
+              Model="employment"
+              OnValidSubmint="CreateAsync"
+              ReturnAction="Return"/>

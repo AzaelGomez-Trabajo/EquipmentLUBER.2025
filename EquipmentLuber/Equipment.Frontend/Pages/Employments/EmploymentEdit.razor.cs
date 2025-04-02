@@ -1,6 +1,7 @@
 ﻿using CurrieTechnologies.Razor.SweetAlert2;
 using Equipment.Frontend.Pages.BranchOffices;
 using Equipment.Frontend.Repositories;
+using Equipment.Frontend.Shared;
 using Equipment.Shared.Entities;
 using Microsoft.AspNetCore.Components;
 using System.Net;
@@ -10,30 +11,28 @@ namespace Equipment.Frontend.Pages.Employments
     public partial class EmploymentEdit
     {
         private Employment? employment;
-        //private EmploymentForm? employmentForm;
+        private FormWithName<Employment>? employmentForm;
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
-        [EditorRequired, Parameter] public int Id { get; set; }
+        [Parameter] public int EmploymentId { get; set; }
         protected async override Task OnParametersSetAsync()
         {
-            var responseHttp = await Repository.GetAsync<Employment>($"/api/Employments/{Id}");
+            var responseHttp = await Repository.GetAsync<Employment>($"/api/Employments/{EmploymentId}");
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
                 {
-                    NavigationManager.NavigateTo("/employments");
+                    Return();
                 }
                 else
                 {
                     var message = await responseHttp.GetErrorMessageAsync();
                     await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                    return;
                 }
             }
-            else
-            {
-                employment = responseHttp.Response;
-            }
+            employment = responseHttp.Response;
         }
 
         private async Task UpdateAsync()
@@ -57,8 +56,8 @@ namespace Equipment.Frontend.Pages.Employments
         }
         private void Return()
         {
-            //employmentForm!.FormPostedSuccessFully = true;
-            NavigationManager.NavigateTo("/employments");
+            employmentForm!.FormPostedSuccessfully = true;
+            NavigationManager.NavigateTo($"/department/details/{employment!.DepartmentId}");
         }
 
     }

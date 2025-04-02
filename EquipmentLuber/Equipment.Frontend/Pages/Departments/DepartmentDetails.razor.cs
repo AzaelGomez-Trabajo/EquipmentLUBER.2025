@@ -4,17 +4,17 @@ using Equipment.Shared.Entities;
 using Microsoft.AspNetCore.Components;
 using System.Net;
 
-namespace Equipment.Frontend.Pages.BranchOffices
+namespace Equipment.Frontend.Pages.Departments
 {
-    public partial class BranchOfficeDetails
+    public partial class DepartmentDetails
     {
-        private BranchOffice? branchOffice;
+        private Department? department;
 
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private IRepository Repository { get; set; } = null!;
 
-        [Parameter] public int BranchOfficeId { get; set; }
+        [Parameter] public int DepartmentId { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -23,7 +23,7 @@ namespace Equipment.Frontend.Pages.BranchOffices
 
         private async Task LoadAsync()
         {
-            var responseHttp = await Repository.GetAsync<BranchOffice>($"api/BranchOffices/{BranchOfficeId}");
+            var responseHttp = await Repository.GetAsync<Department>($"api/Departments/{DepartmentId}");
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
@@ -35,15 +35,15 @@ namespace Equipment.Frontend.Pages.BranchOffices
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 return;
             }
-            branchOffice = responseHttp.Response;
+            department = responseHttp.Response;
         }
 
-        private async Task DeleteAsync(Department department)
+        private async Task DeleteAsync(Employment employment)
         {
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
             {
                 Title = "Confirmacion",
-                Text = $"¿Estas seguro de que quieres borrar el departamento {department.Name}?",
+                Text = $"¿Estas seguro de que quieres borrar el puesto {employment.Name}?",
                 Icon = SweetAlertIcon.Warning,
                 ShowCancelButton = true,
                 ConfirmButtonText = "Si, eliminar",
@@ -56,12 +56,15 @@ namespace Equipment.Frontend.Pages.BranchOffices
                 return;
             }
 
-            var responseHttp = await Repository.DeleteAsync<Department>($"api/Departments/{department.Id}");
+            var responseHttp = await Repository.DeleteAsync<Department>($"api/Employments/{employment.Id}");
             if (responseHttp.Error)
             {
-                var message = await responseHttp.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
-                return;
+                if(responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
+                {
+                    var message = await responseHttp.GetErrorMessageAsync();
+                    await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                    return;
+                }
             }
 
             await LoadAsync();
@@ -71,8 +74,9 @@ namespace Equipment.Frontend.Pages.BranchOffices
                 Position = SweetAlertPosition.BottomEnd,
                 ShowConfirmButton = true,
                 Timer = 3000,
-            }); 
+            });
             await toast.FireAsync(icon: SweetAlertIcon.Success, title: "Departamento borrado exitosamente");
         }
+
     }
 }
