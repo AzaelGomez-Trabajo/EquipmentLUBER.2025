@@ -19,11 +19,13 @@ builder.Services.AddTransient<SeedDb>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped(typeof(IGenericUnitOfWork<>), typeof(GenericUnitOfWork<>));
 
-builder.Services.AddScoped<IBranchOfficeRepository, BranchOfficeRepository>();
-builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+builder.Services.AddScoped<IBranchOfficesRepository, BranchOfficesRepository>();
+builder.Services.AddScoped<IDepartmentsRepository, DepartmentsRepository>();
+builder.Services.AddScoped<IEmploymentsRepository, EmploymentsRepository>();
 
-builder.Services.AddScoped<IBranchOfficeUnitOfWork, BranchOfficeUnitOfWork>();
-builder.Services.AddScoped<IDepartmentUnitOfWork, DepartmentUnitOfWork>();
+builder.Services.AddScoped<IBranchOfficesUnitOfWork, BranchOfficesUnitOfWork>();
+builder.Services.AddScoped<IDepartmentsUnitOfWork, DepartmentsUnitOfWork>();
+builder.Services.AddScoped<IEmploymentsUnitOfWork, EmploymentsUnitOfWork>();
 
 
 var app = builder.Build();

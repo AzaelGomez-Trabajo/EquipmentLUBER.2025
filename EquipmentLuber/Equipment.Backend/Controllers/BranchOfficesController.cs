@@ -1,4 +1,5 @@
 ﻿using Equipment.Backend.UnitsOfWork.Interfaces;
+using Equipment.Shared.DTOs;
 using Equipment.Shared.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,17 +9,28 @@ namespace Equipment.Backend.Controllers
     [Route("/api/[controller]")]
     public class BranchOfficesController : GenericController<BranchOffice>
     {
-        private readonly IBranchOfficeUnitOfWork _branchOfficeUnitOfWork;
+        private readonly IBranchOfficesUnitOfWork _branchOfficesUnitOfWork;
 
-        public BranchOfficesController(IGenericUnitOfWork<BranchOffice> unitOfWork, IBranchOfficeUnitOfWork branchOfficeUnitOfWork) : base(unitOfWork)
+        public BranchOfficesController(IGenericUnitOfWork<BranchOffice> unitOfWork, IBranchOfficesUnitOfWork branchOfficeUnitOfWork) : base(unitOfWork)
         {
-            _branchOfficeUnitOfWork = branchOfficeUnitOfWork;
+            _branchOfficesUnitOfWork = branchOfficeUnitOfWork;
+        }
+
+        [HttpGet("full")]
+        public override async Task<IActionResult> GetAsync()
+        {
+            var response = await _branchOfficesUnitOfWork.GetAsync();
+            if (response.WasSuccess)
+            {
+                return Ok(response.Result);
+            }
+            return BadRequest(response.Message);
         }
 
         [HttpGet]
-        public override async Task<IActionResult> GetAsync()
+        public override async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
         {
-            var response = await _branchOfficeUnitOfWork.GetAsync();
+            var response = await _branchOfficesUnitOfWork.GetAsync(pagination);
             if (response.WasSuccess)
             {
                 return Ok(response.Result);
@@ -29,7 +41,7 @@ namespace Equipment.Backend.Controllers
         [HttpGet("{id}")]
         public override async Task<IActionResult> GetAsync(int id)
         {
-            var response = await _branchOfficeUnitOfWork.GetAsync(id);
+            var response = await _branchOfficesUnitOfWork.GetAsync(id);
             if (response.WasSuccess)
             {
                 return Ok(response.Result);

@@ -1,5 +1,7 @@
 ﻿using Equipment.Backend.Data;
+using Equipment.Backend.Helpers;
 using Equipment.Backend.Repositories.Interfaces;
+using Equipment.Shared.DTOs;
 using Equipment.Shared.Responses;
 using Microsoft.EntityFrameworkCore;
 
@@ -91,6 +93,31 @@ namespace Equipment.Backend.Repositories.Implementations
             {
                 WasSuccess = true,
                 Result = await _entity.ToListAsync()
+            };
+        }
+
+        public virtual async Task<ActionResponse<IEnumerable<T>>> GetAsync(PaginationDTO pagination)
+        {
+            var queryable = _entity.AsQueryable();
+
+            return new ActionResponse<IEnumerable<T>>
+            {
+                WasSuccess = true,
+                Result = await queryable
+                    .Paginate(pagination)
+                    .ToListAsync()
+            };
+        }
+
+        public  virtual async Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination)
+        {
+            var queryable = _entity.AsQueryable();
+            var count = await queryable.CountAsync();
+            int totalPages = (int)Math.Ceiling((double)count / pagination.RecordsNumber);
+            return new ActionResponse<int>
+            {
+                WasSuccess = true,
+                Result = totalPages
             };
         }
 

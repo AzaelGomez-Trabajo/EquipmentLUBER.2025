@@ -1,6 +1,7 @@
 ﻿using Equipment.Backend.UnitsOfWork.Interfaces;
 using Equipment.Backend.Repositories.Interfaces;
 using Equipment.Shared.Responses;
+using Equipment.Shared.DTOs;
 
 namespace Equipment.Backend.UnitsOfWork.Implementations
 {
@@ -12,6 +13,10 @@ namespace Equipment.Backend.UnitsOfWork.Implementations
         {
             _repository = repository;
         }
+
+        public virtual async Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination) => await _repository.GetTotalPagesAsync(pagination);
+
+        public virtual async Task<ActionResponse<IEnumerable<T>>> GetAsync(PaginationDTO pagination) => await _repository.GetAsync(pagination);
 
         public virtual Task<ActionResponse<T>> AddAsync(T entity) => _repository.AddAsync(entity);
 

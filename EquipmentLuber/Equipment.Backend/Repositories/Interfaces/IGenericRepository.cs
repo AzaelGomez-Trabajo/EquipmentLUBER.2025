@@ -1,12 +1,17 @@
-﻿using Equipment.Shared.Responses;
+﻿using Equipment.Shared.DTOs;
+using Equipment.Shared.Responses;
 
 namespace Equipment.Backend.Repositories.Interfaces
 {
     public interface IGenericRepository<T> where T : class
     {
+        Task<ActionResponse<T>> GetAsync(int id);
+
         Task<ActionResponse<IEnumerable<T>>> GetAsync();
 
-        Task<ActionResponse<T>> GetAsync(int id);
+        Task<ActionResponse<IEnumerable<T>>> GetAsync(PaginationDTO pagination);
+
+        Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination);
 
         Task<ActionResponse<T>> AddAsync(T entity);
 
