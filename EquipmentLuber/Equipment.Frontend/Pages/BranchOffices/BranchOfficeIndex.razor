@@ -8,12 +8,15 @@
 
 <GenericList MyList="BranchOffices">
     <Body>
-        <table class="table table-striped">
+        <Pagination CurrentPage="currentPage"
+                    TotalPages="totalPages"
+                    SelectedPage="SelectedPageAsync"/>
+        <table class="table tablecstriped">
             <thead>
                 <tr>
-                    <th>Sucursal</th>
-                    <th>Departamentos</th>
-                    <th>Acciones</th>
+                    <th style="width:210px">Sucursal</th>
+                    <th style="width:210px">Departamentos</th>
+                    <th style="width:210px">Acciones</th>
                 </tr>
             </thead>
             <tbody>

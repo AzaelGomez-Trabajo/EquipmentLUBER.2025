@@ -17,5 +17,13 @@ namespace Equipment.Shared.Entities
         public Department? Department { get; set; } = null!;
 
         public ICollection<Employee>? Employees { get; set; }
+
+        [Display(Name = "Empleados")]
+        public int EmployeesNumber => Employees == null || Employees.Count == 0 ? 0 : Employees.Count;
+
+        public ICollection<FixedAsset>? FixedAssets { get; set; }
+
+        [Display(Name = "Equipos")]
+        public int FixedAssetsNumber => FixedAssets == null || FixedAssets.Count == 0 ? 0 : FixedAssets.Count;
     }
 }

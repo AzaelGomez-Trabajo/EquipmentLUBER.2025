@@ -14,11 +14,12 @@ namespace Equipment.Shared.Entities
 
         public int BranchOfficeId { get; set; }
 
-        public BranchOffice? BranchOffice { get; set; }
+        public BranchOffice? BranchOffice { get; set; } = null!;
 
-        public ICollection<Employment>? Employments { get; set; } = null!;
+        public ICollection<Employment>? Employments { get; set; }
 
         [Display(Name = "Puestos")]
         public int EmploymentsNumber => Employments == null || Employments.Count == 0 ? 0 : Employments.Count;
+
     }
 }

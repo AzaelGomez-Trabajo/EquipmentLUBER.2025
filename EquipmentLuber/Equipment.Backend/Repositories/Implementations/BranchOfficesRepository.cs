@@ -17,11 +17,13 @@ namespace Equipment.Backend.Repositories.Implementations
             _context = context;
         }
 
+        // <resumen>
         public override async Task<ActionResponse<BranchOffice>> GetAsync(int id)
         {
             var branchOffice = await _context.BranchOffices
                 .Include(bo => bo.Departments!)
-                .ThenInclude(d => d.Employments)
+                .ThenInclude(d => d.Employments!)
+                .ThenInclude(e => e.Employees!)
                 .FirstOrDefaultAsync(bo => bo.Id == id);
             if (branchOffice is null)
             {
@@ -38,6 +40,7 @@ namespace Equipment.Backend.Repositories.Implementations
             };
         }
 
+        // todas las sucursales
         public override async Task<ActionResponse<IEnumerable<BranchOffice>>> GetAsync()
         {
            var branchOffices = await _context.BranchOffices
@@ -50,18 +53,20 @@ namespace Equipment.Backend.Repositories.Implementations
             };
         }
 
+        // todas las sucursales con paginacion
         public override async Task<ActionResponse<IEnumerable<BranchOffice>>> GetAsync(PaginationDTO pagination)
         {
             var queryable = _context.BranchOffices
                 .Include(bo => bo.Departments!)
                 .AsQueryable();
+            var branchOffices = await queryable
+                .OrderBy(bo => bo.Name)
+                .Paginate(pagination)
+                .ToListAsync();
             return new ActionResponse<IEnumerable<BranchOffice>>
             {
                 WasSuccess = true,
-                Result = await queryable
-                        .OrderBy(bo => bo.Name)
-                        .Paginate(pagination)
-                        .ToListAsync()
+                Result = branchOffices
             };
         }
     }

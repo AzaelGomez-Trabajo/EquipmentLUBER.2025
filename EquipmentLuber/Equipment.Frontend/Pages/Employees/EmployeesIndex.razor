@@ -1,0 +1,38 @@
+﻿@page "/employees"
+
+<h3>Empleados</h3>
+
+<div class="mb-3">
+    <a class="btn btn-outline-primary" href="/employees/create"> Nuevo Empleado</a>
+</div>
+
+<GenericList MyList="Employees">
+    <Body>
+        <Pagination CurrentPage="currentPage"
+                    TotalPages="totalPages"
+                    SelectedPage="SelectedPageAsync" />
+        <table class="table tablecstriped">
+            <thead>
+                <tr>
+                    <th >Empleado</th>
+                    <th style="width:210px">Equipo</th>
+                    <th style="width:210px">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var employee in Employees!)
+                {
+                    <tr>
+                        <td>@employee.Name</td>
+                        <td>@employee.Name</td>
+                        <td>
+                            <a href="/employee/edit/@employee.Id" class="btn btn-outline-warning btn-sm">Editar</a>
+                            <a href="/employee/details/@employee.Id" class="btn btn-outline-info btn-sm">Detalles</a>
+                            <button @onclick=@(() => DeleteAsync(employee)) class="btn btn-outline-danger btn-sm">Borrar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </Body>
+</GenericList>

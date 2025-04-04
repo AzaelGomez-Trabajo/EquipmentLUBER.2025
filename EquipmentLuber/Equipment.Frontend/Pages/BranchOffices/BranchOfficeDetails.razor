@@ -12,18 +12,21 @@ else
         <a class="btn btn-outline-info" href="/branchoffices">Regresar</a>
     </div>
     <h4>Departamentos</h4>
-    <GenericList MyList="branchOffice.Departments!.ToList()">
+    <GenericList MyList="departments!">
         <Body>
+            <Pagination CurrentPage="currentPage"
+                        TotalPages="totalPages"
+                        SelectedPage="SelectedPageAsync" />
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Departamento</th>
-                        <th>Puestos</th>
-                        <th>Acciones</th>
+                        <th style="width:210px">Departamento</th>
+                        <th style="width:210px">Puestos</th>
+                        <th style="width:210px">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var department in branchOffice.Departments!)
+                    @foreach (var department in departments!)
                     {
                         <tr>
                             <td>@department.Name</td>

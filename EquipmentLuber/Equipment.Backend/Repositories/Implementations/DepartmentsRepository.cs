@@ -56,13 +56,14 @@ namespace Equipment.Backend.Repositories.Implementations
                 .Include(d => d.Employments)
                 .Where(bo => bo.BranchOfficeId == pagination.Id)
                 .AsQueryable();
+            var departments = await queryable
+                        .OrderBy(d => d.Name)
+                        .Paginate(pagination)
+                        .ToListAsync();
             return new ActionResponse<IEnumerable<Department>>
             {
                 WasSuccess = true,
-                Result = await queryable
-                        .OrderBy(d => d.Name)
-                        .Paginate(pagination)
-                        .ToListAsync()
+                Result = departments
             };
         }
 

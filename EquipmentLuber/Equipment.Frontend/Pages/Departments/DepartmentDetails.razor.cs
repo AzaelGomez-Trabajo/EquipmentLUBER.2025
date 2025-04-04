@@ -1,5 +1,6 @@
 ﻿using CurrieTechnologies.Razor.SweetAlert2;
 using Equipment.Frontend.Repositories;
+using Equipment.Shared.DTOs;
 using Equipment.Shared.Entities;
 using Microsoft.AspNetCore.Components;
 using System.Net;
@@ -9,6 +10,9 @@ namespace Equipment.Frontend.Pages.Departments
     public partial class DepartmentDetails
     {
         private Department? department;
+        private List<Employment>? employments;
+        private int currentPage = 1;
+        private int totalPages;
 
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
@@ -21,7 +25,69 @@ namespace Equipment.Frontend.Pages.Departments
             await LoadAsync();
         }
 
-        private async Task LoadAsync()
+        private async Task SelectedPageAsync(int page)
+        {
+            if (page == currentPage)
+            {
+                return;
+            }
+            currentPage = page;
+            await LoadAsync(page);
+        }
+
+        private async Task LoadAsync(int page = 1)
+        {
+            var ok = await LoadDepartmentAsync();
+            if (ok)
+            {
+                ok = await LoadEmploymentsAsync(page);
+                if (ok)
+                {
+                    await LoadPagesAsync();
+                }
+            }
+        }
+
+        private async Task LoadPagesAsync()
+        {
+            var responseHttp = await Repository.GetAsync<int>($"api/Employments/totalPages?id={DepartmentId}");
+            if (responseHttp.Error)
+            {
+                if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
+                {
+                    NavigationManager.NavigateTo("/departments");
+                }
+                else
+                {
+                    var message = await responseHttp.GetErrorMessageAsync();
+                    await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                }
+                return;
+            }
+            totalPages = responseHttp.Response;
+        }
+
+        private async Task<bool> LoadEmploymentsAsync(int page)
+        {
+            var responseHttp = await Repository.GetAsync<List<Employment>>($"api/Employments?id={DepartmentId}&page={page}");
+            if (responseHttp.Error)
+            {
+                if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
+                {
+                    NavigationManager.NavigateTo("/departments");
+                }
+                else
+                {
+                    var message = await responseHttp.GetErrorMessageAsync();
+                    await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                }
+                return false;
+            }
+            employments = responseHttp.Response;
+            return true;
+        }
+
+        private async Task<bool> LoadDepartmentAsync()
         {
             var responseHttp = await Repository.GetAsync<Department>($"api/Departments/{DepartmentId}");
             if (responseHttp.Error)
@@ -29,14 +95,32 @@ namespace Equipment.Frontend.Pages.Departments
                 if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
                 {
                     NavigationManager.NavigateTo("/branchOffices");
-                    return;
+                    return false;
                 }
                 var message = await responseHttp.GetErrorMessageAsync();
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
-                return;
+                return false;
             }
             department = responseHttp.Response;
+            return true;
         }
+
+        //private async Task LoadAsync()
+        //{
+        //    var responseHttp = await Repository.GetAsync<Department>($"api/Departments/{DepartmentId}");
+        //    if (responseHttp.Error)
+        //    {
+        //        if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
+        //        {
+        //            NavigationManager.NavigateTo("/branchOffices");
+        //            return;
+        //        }
+        //        var message = await responseHttp.GetErrorMessageAsync();
+        //        await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+        //        return;
+        //    }
+        //    department = responseHttp.Response;
+        //}
 
         private async Task DeleteAsync(Employment employment)
         {
@@ -46,7 +130,7 @@ namespace Equipment.Frontend.Pages.Departments
                 Text = $"¿Estas seguro de que quieres borrar el puesto {employment.Name}?",
                 Icon = SweetAlertIcon.Warning,
                 ShowCancelButton = true,
-                ConfirmButtonText = "Si, eliminar",
+                ConfirmButtonText = "Si, borrar",
                 CancelButtonText = "No"
             });
 
@@ -59,7 +143,7 @@ namespace Equipment.Frontend.Pages.Departments
             var responseHttp = await Repository.DeleteAsync<Department>($"api/Employments/{employment.Id}");
             if (responseHttp.Error)
             {
-                if(responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
+                if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
                 {
                     var message = await responseHttp.GetErrorMessageAsync();
                     await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
@@ -75,7 +159,7 @@ namespace Equipment.Frontend.Pages.Departments
                 ShowConfirmButton = true,
                 Timer = 3000,
             });
-            await toast.FireAsync(icon: SweetAlertIcon.Success, title: "Departamento borrado exitosamente");
+            await toast.FireAsync(icon: SweetAlertIcon.Success, title: "Puesto borrado exitosamente");
         }
 
     }

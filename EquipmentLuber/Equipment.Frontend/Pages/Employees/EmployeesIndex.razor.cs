@@ -4,18 +4,16 @@ using Equipment.Shared.Entities;
 using Microsoft.AspNetCore.Components;
 using System.Net;
 
-namespace Equipment.Frontend.Pages.BranchOffices
+namespace Equipment.Frontend.Pages.Employees
 {
-    public partial class BranchOfficeIndex
+    public partial class EmployeesIndex
     {
         private int currentPage = 1;
         private int totalPages;
-
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
-
-        public List<BranchOffice>? BranchOffices { get; set; }
+        public List<Employee>? Employees { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -43,12 +41,12 @@ namespace Equipment.Frontend.Pages.BranchOffices
 
         private async Task<bool> LoadListAsync(int page)
         {
-            var responseHttp = await Repository.GetAsync<List<BranchOffice>>($"api/branchoffices?page={page}");
+            var responseHttp = await Repository.GetAsync<List<Employee>>($"api/Employees?page={page}");
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
                 {
-                    NavigationManager.NavigateTo("/branchOffices");
+                    NavigationManager.NavigateTo("/employees");
                 }
                 else
                 {
@@ -57,18 +55,18 @@ namespace Equipment.Frontend.Pages.BranchOffices
                 }
                 return false;
             }
-            BranchOffices = responseHttp.Response;
+            Employees = responseHttp.Response;
             return true;
         }
 
         private async Task LoadPagesAsync()
         {
-            var responseHttp = await Repository.GetAsync<int>("api/branchoffices/TotalPages");
+            var responseHttp = await Repository.GetAsync<int>("api/Employees/TotalPages");
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
                 {
-                    NavigationManager.NavigateTo("/branchOffices");
+                    NavigationManager.NavigateTo("/employees");
                 }
                 else
                 {
@@ -80,26 +78,26 @@ namespace Equipment.Frontend.Pages.BranchOffices
             totalPages = responseHttp.Response;
         }
 
-        private async Task DeleteAsync(BranchOffice branchOffice)
+        private async Task DeleteAsync(Employee employee)
         {
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
             {
                 Title = "Confirmacion",
-                Text = $"Estas seguro de borrar la sucursal: {branchOffice.Name}",
+                Text = $"¿Estas seguro de borrar el empleado {employee.Name}?",
                 Icon = SweetAlertIcon.Warning,
-                ShowCancelButton = true
+                ShowCancelButton = true,
             });
             var confirm = string.IsNullOrEmpty(result.Value);
             if (confirm)
             {
                 return;
             }
-            var responseHttp = await Repository.DeleteAsync<BranchOffice>($"api/branchoffices/{branchOffice.Id}");
+            var responseHttp = await Repository.DeleteAsync<Employee>($"api/Employees/{employee.Id}");
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
                 {
-                    NavigationManager.NavigateTo("/branchOffices");
+                    NavigationManager.NavigateTo("/employees");
                 }
                 else
                 {
@@ -108,7 +106,7 @@ namespace Equipment.Frontend.Pages.BranchOffices
                 }
                 return;
             }
-            await LoadAsync();
+            await LoadAsync(currentPage);
             var toast = SweetAlertService.Mixin(new SweetAlertOptions
             {
                 Toast = true,
@@ -116,7 +114,7 @@ namespace Equipment.Frontend.Pages.BranchOffices
                 ShowConfirmButton = true,
                 Timer = 3000,
             });
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro borrado con exito.");
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro borrado con exito");
         }
     }
 }

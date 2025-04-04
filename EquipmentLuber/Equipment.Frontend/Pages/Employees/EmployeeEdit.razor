@@ -1,0 +1,16 @@
+﻿@page "/employee/edit/{EmployeeId:int}"
+
+<h3>Editar Empleado</h3>
+
+@if (employee is null)
+{
+    <Loading />
+}
+else
+{
+    <FormWithName @ref="employeeForm" 
+        Label="Empleado: "
+        Model="employee" 
+        OnValidSubmit="UpdateAsync" 
+        ReturnAction="Return" />
+}

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Equipment.Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250402171707_AddEmployeeEntity")]
+    [Migration("20250403221202_AddEmployeeEntity")]
     partial class AddEmployeeEntity
     {
         /// <inheritdoc />
@@ -76,6 +76,10 @@ namespace Equipment.Backend.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("EmployeeNumber")
+                        .HasMaxLength(10)
+                        .HasColumnType("int");
 
                     b.Property<int>("EmploymentId")
                         .HasColumnType("int");

@@ -1,0 +1,44 @@
+﻿@page "/employee/details/{EmployeeId:int}"
+
+@if (employee is null)
+{
+    <Loading/>
+}
+else
+{
+    <h3>@employee.Name</h3>
+    <div class="2">
+        <a class="btn btn-outline-info" href="/employees">Regresar</a>
+    </div>
+    <h4>Departamento</h4>
+
+    <h4>Puesto</h4>
+@*     <GenericList MyList="employee.Employment!.ToList()">
+        <Body>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Departamento</th>
+                        <th>Puesto</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var employment in employee.Employment!)
+                    {
+                        <tr>
+                            <td>@employment.Name</td>
+                            <td>@employment.Position</td>
+                            <td>
+                                <a class="btn btn-outline-warning btn-sm" href="/department/edit/@department.Id">Editar</a>
+                                <a class="btn btn-outline-info btn-sm" href="/department/details/@department.Id">Detalles</a>
+                                <button class="btn btn-outline-danger btn-sm" @onclick=@(() => DeleteAsync(department))>Borrar</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </Body>
+    </GenericList>
+ *@
+}

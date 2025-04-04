@@ -2,6 +2,7 @@
 using Equipment.Frontend.Repositories;
 using Equipment.Shared.Entities;
 using Microsoft.AspNetCore.Components;
+using System.Collections.Generic;
 using System.Net;
 
 namespace Equipment.Frontend.Pages.BranchOffices
@@ -9,6 +10,9 @@ namespace Equipment.Frontend.Pages.BranchOffices
     public partial class BranchOfficeDetails
     {
         private BranchOffice? branchOffice;
+        private List<Department>? departments;
+        private int currentPage = 1;
+        private int totalPages;
 
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
@@ -21,21 +25,82 @@ namespace Equipment.Frontend.Pages.BranchOffices
             await LoadAsync();
         }
 
-        private async Task LoadAsync()
+        private async Task SelectedPageAsync(int page)
+        {
+            if (page == currentPage)
+            {
+                return;
+            }
+            currentPage = page;
+            await LoadAsync(page);
+        }
+
+        private async Task LoadAsync(int page = 1)
+        {
+            var ok = await LoadBranchOfficeAsync();
+            if (ok)
+            {
+                ok = await LoadDepartmentsAsync(page);
+                if (ok)
+                {
+                    await LoadPagesAsync();
+                }
+            }
+        }
+
+        private async Task LoadPagesAsync()
+        {
+            var responseHttp = await Repository.GetAsync<int>($"api/Departments/totalPages?id={BranchOfficeId}");
+            if (responseHttp.Error)
+            {
+                if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
+                {
+                    NavigationManager.NavigateTo("/departments");
+                }
+                else
+                {
+                    var message = await responseHttp.GetErrorMessageAsync();
+                    await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                }
+                return;
+            }
+            totalPages = responseHttp.Response;
+        }
+
+        private async Task<bool> LoadDepartmentsAsync(int page)
+        {
+            var responseHttp = await Repository.GetAsync<List<Department>>($"api/Departments?id={BranchOfficeId}&page={page}");
+            if (responseHttp.Error)
+            {
+                if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
+                {
+                    NavigationManager.NavigateTo("/departments");
+                    return false;
+                }
+                var message = await responseHttp.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                return false;
+            }
+            departments = responseHttp.Response;
+            return true;
+        }
+
+        private async Task<bool> LoadBranchOfficeAsync()
         {
             var responseHttp = await Repository.GetAsync<BranchOffice>($"api/BranchOffices/{BranchOfficeId}");
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
                 {
-                    NavigationManager.NavigateTo("/branchOffices");
-                    return;
+                    NavigationManager.NavigateTo("/branchoffices");
+                    return false;
                 }
                 var message = await responseHttp.GetErrorMessageAsync();
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
-                return;
+                return false;
             }
             branchOffice = responseHttp.Response;
+            return true;
         }
 
         private async Task DeleteAsync(Department department)
@@ -46,7 +111,7 @@ namespace Equipment.Frontend.Pages.BranchOffices
                 Text = $"¿Estas seguro de que quieres borrar el departamento {department.Name}?",
                 Icon = SweetAlertIcon.Warning,
                 ShowCancelButton = true,
-                ConfirmButtonText = "Si, eliminar",
+                ConfirmButtonText = "Si, borrar",
                 CancelButtonText = "No"
             });
 
@@ -67,6 +132,7 @@ namespace Equipment.Frontend.Pages.BranchOffices
             await LoadAsync();
             var toast = SweetAlertService.Mixin(new SweetAlertOptions
             {
+                Title = "Exito",
                 Toast = true,
                 Position = SweetAlertPosition.BottomEnd,
                 ShowConfirmButton = true,

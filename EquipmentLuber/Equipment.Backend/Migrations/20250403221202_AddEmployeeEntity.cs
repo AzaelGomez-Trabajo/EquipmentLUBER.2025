@@ -39,6 +39,7 @@ namespace Equipment.Backend.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    EmployeeNumber = table.Column<int>(type: "int", maxLength: 10, nullable: false),
                     EmploymentId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

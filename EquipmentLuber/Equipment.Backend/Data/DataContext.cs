@@ -13,6 +13,7 @@ namespace Equipment.Backend.Data
         public DbSet<Department> Departments { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Employment> Employments { get; set; }
+        public DbSet<FixedAsset> FixedAssets { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -21,6 +22,7 @@ namespace Equipment.Backend.Data
             modelBuilder.Entity<Department>().HasIndex(x => new { x.BranchOfficeId, x.Name }).IsUnique();
             modelBuilder.Entity<Employment>().HasIndex(x => new { x.DepartmentId, x.Name }).IsUnique();
             modelBuilder.Entity<Employee>().HasIndex(x => new { x.EmploymentId, x.Name }).IsUnique();
+            modelBuilder.Entity<FixedAsset>().HasIndex(x => new { x.EmploymentId, x.Name }).IsUnique();
             DisableCascadingDelete(modelBuilder);
         }
 
