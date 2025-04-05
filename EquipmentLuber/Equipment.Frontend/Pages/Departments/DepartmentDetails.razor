@@ -14,14 +14,12 @@ else
     <h4>Puestos</h4>
     <GenericList MyList="employments">
         <Body>
-            <Pagination CurrentPage="currentPage"
-                        TotalPages="totalPages"
-                        SelectedPage="SelectedPageAsync" />
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th >Puestos</th>
                         <th >Empleados</th>
+                        <th >Equipos</th>
                         <th style="width:210px" >Acciones</th>
                     </tr>
                 </thead>
@@ -31,6 +29,7 @@ else
                         <tr>
                             <td>@employment.Name</td>
                             <td>@employment.EmployeesNumber</td>
+                            <td>@employment.FixedAssetsNumber</td>
                             <td>
                                 <a class="btn btn-outline-warning btn-sm" href="/employment/edit/@employment.Id">Editar</a>
                                 <a class="btn btn-outline-info btn-sm" href="/employment/details/@employment.Id">Detalles</a>
@@ -40,6 +39,9 @@ else
                     }
                 </tbody>
             </table>
+            <Pagination CurrentPage="currentPage"
+                        TotalPages="totalPages"
+                        SelectedPage="SelectedPageAsync" />
         </Body>
     </GenericList>
 }

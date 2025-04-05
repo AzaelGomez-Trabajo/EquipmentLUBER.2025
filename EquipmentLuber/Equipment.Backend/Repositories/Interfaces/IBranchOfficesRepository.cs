@@ -11,5 +11,8 @@ namespace Equipment.Backend.Repositories.Interfaces
         Task<ActionResponse<IEnumerable<BranchOffice>>> GetAsync();
 
         Task<ActionResponse<IEnumerable<BranchOffice>>> GetAsync(PaginationDTO pagination);
+        
+        Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination);
+
     }
 }

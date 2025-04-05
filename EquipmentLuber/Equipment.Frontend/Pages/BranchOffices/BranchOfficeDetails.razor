@@ -14,9 +14,6 @@ else
     <h4>Departamentos</h4>
     <GenericList MyList="departments!">
         <Body>
-            <Pagination CurrentPage="currentPage"
-                        TotalPages="totalPages"
-                        SelectedPage="SelectedPageAsync" />
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -40,6 +37,9 @@ else
                     }
                 </tbody>
             </table>
+            <Pagination CurrentPage="currentPage"
+                        TotalPages="totalPages"
+                        SelectedPage="SelectedPageAsync" />
         </Body>
     </GenericList>
 }

@@ -22,10 +22,14 @@ builder.Services.AddScoped(typeof(IGenericUnitOfWork<>), typeof(GenericUnitOfWor
 builder.Services.AddScoped<IBranchOfficesRepository, BranchOfficesRepository>();
 builder.Services.AddScoped<IDepartmentsRepository, DepartmentsRepository>();
 builder.Services.AddScoped<IEmploymentsRepository, EmploymentsRepository>();
+builder.Services.AddScoped<IEmployeesRepository, EmployeesRepository>();
+builder.Services.AddScoped<IFixedAssetsRepository, FixedAssetRepository>();
 
 builder.Services.AddScoped<IBranchOfficesUnitOfWork, BranchOfficesUnitOfWork>();
 builder.Services.AddScoped<IDepartmentsUnitOfWork, DepartmentsUnitOfWork>();
+builder.Services.AddScoped<IEmployeesUnitOfWork, EmployeesUnitOfWork>();
 builder.Services.AddScoped<IEmploymentsUnitOfWork, EmploymentsUnitOfWork>();
+builder.Services.AddScoped<IFixedAssetsUnitOfWork, FixedAssetsUnitOfWork>();
 
 
 var app = builder.Build();

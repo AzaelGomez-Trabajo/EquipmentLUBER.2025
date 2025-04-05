@@ -15,6 +15,7 @@ namespace Equipment.Backend.UnitsOfWork.Implementations
             _branchOfficeRepository = branchOfficeRepository;
         }
 
+        public override async Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination) => await _branchOfficeRepository.GetTotalPagesAsync(pagination);
 
         public override async Task<ActionResponse<BranchOffice>> GetAsync(int id) => await _branchOfficeRepository.GetAsync(id);
 

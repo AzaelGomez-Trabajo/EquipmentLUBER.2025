@@ -24,6 +24,7 @@ namespace Equipment.Backend.Repositories.Implementations
                 .Include(bo => bo.Departments!)
                 .ThenInclude(d => d.Employments!)
                 .ThenInclude(e => e.Employees!)
+                .ThenInclude(e => e.FixedAssets!)
                 .FirstOrDefaultAsync(bo => bo.Id == id);
             if (branchOffice is null)
             {
@@ -43,9 +44,9 @@ namespace Equipment.Backend.Repositories.Implementations
         // todas las sucursales
         public override async Task<ActionResponse<IEnumerable<BranchOffice>>> GetAsync()
         {
-           var branchOffices = await _context.BranchOffices
-                .OrderBy(bo => bo.Name)
-                .ToListAsync();
+            var branchOffices = await _context.BranchOffices
+                 .OrderBy(bo => bo.Name)
+                 .ToListAsync();
             return new ActionResponse<IEnumerable<BranchOffice>>
             {
                 WasSuccess = true,
@@ -59,14 +60,34 @@ namespace Equipment.Backend.Repositories.Implementations
             var queryable = _context.BranchOffices
                 .Include(bo => bo.Departments!)
                 .AsQueryable();
+            if (!string.IsNullOrEmpty(pagination.Filter))
+            {
+                queryable = queryable.Where(bo => bo.Name.ToLower().Contains(pagination.Filter.ToLower()));
+            }
             var branchOffices = await queryable
-                .OrderBy(bo => bo.Name)
-                .Paginate(pagination)
-                .ToListAsync();
+            .OrderBy(bo => bo.Name)
+            .Paginate(pagination)
+            .ToListAsync();
             return new ActionResponse<IEnumerable<BranchOffice>>
             {
                 WasSuccess = true,
                 Result = branchOffices
+            };
+        }
+
+        public override async Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination)
+        {
+            var queryable = _context.BranchOffices.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(pagination.Filter))
+            {
+                queryable = queryable.Where(bo => bo.Name.ToLower().Contains(pagination.Filter.ToLower()));
+            }
+            var count = await queryable.CountAsync();
+            var totalPages = (int)Math.Ceiling((double)count / pagination.RecordsNumber);
+            return new ActionResponse<int>
+            {
+                WasSuccess = true,
+                Result = totalPages
             };
         }
     }

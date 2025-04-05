@@ -17,9 +17,5 @@ namespace Equipment.Shared.Entities
 
         public ICollection<Employee>? Employees { get; set; }
 
-        [Display(Name = "Empleado")]
-        public int EmployeesNumber => Employees == null || Employees.Count == 0 ? 0 : Employees.Count;
-
-
     }
 }

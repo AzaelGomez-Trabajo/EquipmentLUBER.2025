@@ -54,8 +54,13 @@ namespace Equipment.Backend.Repositories.Implementations
         {
             var queryable = _context.Employments
                             .Include(e => e.Employees!)
+                            .ThenInclude(e => e.FixedAssets!)
                             .Where(e => e.DepartmentId == pagination.Id)
                             .AsQueryable();
+            if (!string.IsNullOrWhiteSpace(pagination.Filter))
+            {
+                queryable = queryable.Where(e => e.Name.ToLower().Contains(pagination.Filter.ToLower()));
+            }
             var employments = await queryable
                         .OrderBy(e => e.Name)
                         .Paginate(pagination)
@@ -72,8 +77,12 @@ namespace Equipment.Backend.Repositories.Implementations
             var queryable = _context.Employments
                 .Where(e => e.DepartmentId == pagination.Id)
                 .AsQueryable();
+            if (!string.IsNullOrWhiteSpace(pagination.Filter))
+            {
+                queryable = queryable.Where(e => e.Name.ToLower().Contains(pagination.Filter.ToLower()));
+            }
             var count = await queryable.CountAsync();
-            int totalPages = (int)Math.Ceiling((double)count / pagination.RecordsNumber);
+            var totalPages = (int)Math.Ceiling((double)count / pagination.RecordsNumber);
             return new ActionResponse<int>
             {
                 WasSuccess = true,

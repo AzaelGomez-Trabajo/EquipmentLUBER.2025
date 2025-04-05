@@ -105,23 +105,6 @@ namespace Equipment.Frontend.Pages.Departments
             return true;
         }
 
-        //private async Task LoadAsync()
-        //{
-        //    var responseHttp = await Repository.GetAsync<Department>($"api/Departments/{DepartmentId}");
-        //    if (responseHttp.Error)
-        //    {
-        //        if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
-        //        {
-        //            NavigationManager.NavigateTo("/branchOffices");
-        //            return;
-        //        }
-        //        var message = await responseHttp.GetErrorMessageAsync();
-        //        await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
-        //        return;
-        //    }
-        //    department = responseHttp.Response;
-        //}
-
         private async Task DeleteAsync(Employment employment)
         {
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
